@@ -233,24 +233,24 @@ Bu implementation plan, Farcaster Prediction Market uygulamasının adım adım 
   - Phase 2'de database eklendiğinde implement edilecek
   - _Requirements: 18.1-18.7 (Phase 2)_
 
-- [ ] 12. Farcaster sosyal entegrasyon
-  - [ ] 12.1 Farcaster cast API
+- [x] 12. Farcaster sosyal entegrasyon
+  - [x] 12.1 Farcaster cast API
     - Neynar SDK entegrasyonu
     - POST /api/social/share (market paylaşımı)
     - Cast publishing logic
     - _Requirements: 15.1-15.7_
-  - [ ] 12.2 Farcaster Frames
+  - [x] 12.2 Farcaster Frames
     - Frame metadata generation
     - Frame image generation (OG images)
     - Frame button handlers
     - Frame validation
     - _Requirements: 15.1-15.7_
-  - [ ] 12.3 Social feed
+  - [x] 12.3 Social feed
     - GET /api/social/feed (follower activities)
     - Activity aggregation
     - Feed display component
     - _Requirements: 15.4_
-  - [ ] 12.4 Share buttons
+  - [x] 12.4 Share buttons
     - Share on Farcaster button
     - Share bet button
     - Share win button
