@@ -3,7 +3,10 @@
 import { useState } from 'react';
 import { formatEther } from 'viem';
 import { useMarket } from '@/lib/hooks/useMarkets';
-import type { CachedMarket } from '@/lib/kv/types';
+import { usePlaceBet } from '@/lib/hooks/usePlaceBet';
+import { useWallet } from '@/lib/hooks/useWallet';
+import { BetModal } from '@/components/betting';
+import type { CachedMarket, CachedOutcome } from '@/lib/kv/types';
 
 interface MarketDetailProps {
   marketId: string;
@@ -31,7 +34,10 @@ export default function MarketDetail({
   userAddress,
 }: MarketDetailProps) {
   const { data, isLoading, error } = useMarket(marketId);
-  const [selectedOutcome, setSelectedOutcome] = useState<number | null>(null);
+  const [selectedOutcome, setSelectedOutcome] = useState<CachedOutcome | null>(null);
+  const [showBetModal, setShowBetModal] = useState(false);
+  const { address, balance, isConnected } = useWallet();
+  const { placeBet, isLoading: isPlacingBet } = usePlaceBet();
 
   if (isLoading) {
     return (
@@ -127,11 +133,14 @@ export default function MarketDetail({
             return (
               <div
                 key={outcome.outcomeId}
-                onClick={() =>
-                  isActive && setSelectedOutcome(outcome.outcomeId)
-                }
+                onClick={() => {
+                  if (isActive) {
+                    setSelectedOutcome(outcome);
+                    setShowBetModal(true);
+                  }
+                }}
                 className={`p-4 border-2 rounded-lg transition-all cursor-pointer ${
-                  selectedOutcome === outcome.outcomeId
+                  selectedOutcome?.outcomeId === outcome.outcomeId
                     ? 'border-blue-500 bg-blue-50'
                     : 'border-gray-200 hover:border-gray-300'
                 } ${!isActive && 'opacity-60 cursor-not-allowed'}`}
@@ -160,18 +169,12 @@ export default function MarketDetail({
           })}
         </div>
 
-        {/* Bet Button */}
-        {isActive && selectedOutcome !== null && (
-          <div className="mt-6">
-            <button
-              onClick={() => {
-                // This will be implemented in task 7 (Betting system)
-                alert('Betting functionality will be implemented in task 7');
-              }}
-              className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-            >
-              Place Bet on {market.outcomes[selectedOutcome]?.name}
-            </button>
+        {/* Wallet Connection Notice */}
+        {isActive && !isConnected && (
+          <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-center">
+            <p className="text-yellow-800">
+              Please connect your wallet to place bets
+            </p>
           </div>
         )}
 
@@ -225,6 +228,35 @@ export default function MarketDetail({
           </p>
         </div>
       </div>
+
+      {/* Bet Modal */}
+      {showBetModal && selectedOutcome && (
+        <BetModal
+          market={market}
+          outcome={selectedOutcome}
+          userBalance={balance || undefined}
+          onConfirm={async (amount) => {
+            const result = await placeBet({
+              marketId: market.marketId,
+              outcomeId: selectedOutcome.outcomeId,
+              amount,
+            });
+
+            if (result.success) {
+              setShowBetModal(false);
+              setSelectedOutcome(null);
+              // Refresh market data
+              window.location.reload();
+            } else {
+              throw new Error(result.error || 'Failed to place bet');
+            }
+          }}
+          onClose={() => {
+            setShowBetModal(false);
+            setSelectedOutcome(null);
+          }}
+        />
+      )}
     </div>
   );
 }

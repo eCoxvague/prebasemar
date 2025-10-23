@@ -66,6 +66,23 @@ export interface CachedUserBets {
 }
 
 /**
+ * Leaderboard entry (calculated from blockchain data)
+ * TTL: 10 minutes
+ */
+export interface LeaderboardEntry {
+  fid: number;
+  username: string;
+  displayName: string;
+  pfpUrl: string;
+  totalWagered: string;
+  totalWon: string;
+  totalBets: number;
+  wonBets: number;
+  winRate: number;
+  rank: number;
+}
+
+/**
  * KV Keys Structure:
  * - session:{fid} → UserSession (TTL: 24h)
  * - user:{fid} → CachedUser (TTL: 1h)
@@ -73,4 +90,5 @@ export interface CachedUserBets {
  * - market:{id} → CachedMarket (TTL: 5min)
  * - user:{fid}:bets → CachedUserBets[] (TTL: 5min)
  * - odds:{marketId} → number[] (TTL: 30s)
+ * - leaderboard:all → LeaderboardEntry[] (TTL: 10min)
  */

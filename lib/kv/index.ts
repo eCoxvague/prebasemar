@@ -4,7 +4,11 @@ import type {
   CachedUser,
   CachedMarket,
   CachedUserBets,
+  LeaderboardEntry,
 } from './types';
+
+// Re-export pub/sub functions
+export * from './pubsub';
 
 // TTL constants (in seconds)
 const TTL = {
@@ -12,6 +16,7 @@ const TTL = {
   USER: 3600, // 1 hour
   MARKET: 300, // 5 minutes
   ODDS: 30, // 30 seconds
+  LEADERBOARD: 600, // 10 minutes
 } as const;
 
 // ============================================================================
@@ -299,4 +304,33 @@ export async function getCacheStats(): Promise<{
  */
 export async function flushAllCache(): Promise<void> {
   await kv.flushdb();
+}
+
+// ============================================================================
+// Leaderboard Cache Functions
+// ============================================================================
+
+/**
+ * Cache leaderboard data
+ * @param entries - Array of leaderboard entries
+ */
+export async function cacheLeaderboard(
+  entries: LeaderboardEntry[]
+): Promise<void> {
+  await kv.set('leaderboard:all', entries, { ex: TTL.LEADERBOARD });
+}
+
+/**
+ * Get cached leaderboard
+ * @returns Array of leaderboard entries or null if not found
+ */
+export async function getCachedLeaderboard(): Promise<LeaderboardEntry[] | null> {
+  return await kv.get<LeaderboardEntry[]>('leaderboard:all');
+}
+
+/**
+ * Invalidate leaderboard cache
+ */
+export async function invalidateLeaderboardCache(): Promise<void> {
+  await kv.del('leaderboard:all');
 }

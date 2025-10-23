@@ -151,83 +151,83 @@ Bu implementation plan, Farcaster Prediction Market uygulamasının adım adım 
     - Bet history list
     - _Requirements: 4.1-4.6, 5.1-5.8_
 
-- [ ] 7. Bahis (Betting) sistemi
-  - [ ] 7.1 Betting API endpoints (blockchain-first)
+- [x] 7. Bahis (Betting) sistemi
+  - [x] 7.1 Betting API endpoints (blockchain-first)
     - POST /api/bets (smart contract call + cache invalidation)
     - GET /api/bets/user/[fid] (blockchain read + cache)
     - Bet validation logic
     - _Requirements: 5.1-5.8_
-  - [ ] 7.2 AMM odds calculation
+  - [x] 7.2 AMM odds calculation
     - Odds calculation service (blockchain read)
     - Odds caching (Vercel KV, 30s TTL)
     - Slippage calculation
     - Potential winnings calculation
     - _Requirements: 14.1-14.7_
-  - [ ] 7.3 Bet placement UI
+  - [x] 7.3 Bet placement UI
     - BetModal component
     - Amount input with validation
     - Odds display (cached with auto-refresh)
     - Potential winnings display
     - Confirmation dialog
     - _Requirements: 5.1-5.8_
-  - [ ] 7.4 Bet placement flow
+  - [x] 7.4 Bet placement flow
     - Balance check
     - Smart contract interaction (placeBet)
     - Transaction confirmation
     - Cache invalidation (market, odds, user bets)
     - _Requirements: 5.1-5.8_
 
-- [ ]\* 8. Real-time updates (Opsiyonel - Phase 2)
-  - [ ]\* 8.1 Polling-based updates (MVP için yeterli)
+- [x] 8. Real-time updates (Opsiyonel - Phase 2)
+  - [x] 8.1 Polling-based updates (MVP için yeterli)
     - Client-side polling (her 30s odds refresh)
     - Cache-based updates
     - Optimistic UI updates
     - _Requirements: 9.1-9.5_
-  - [ ]\* 8.2 WebSocket implementation (Phase 2)
+  - [x] 8.2 WebSocket implementation (Phase 2)
     - Socket.io server setup (opsiyonel)
     - Vercel KV pub/sub kullanımı
     - Real-time odds broadcast
     - _Requirements: 9.1-9.5_
 
-- [ ] 9. Market resolution ve winnings
-  - [ ] 9.1 Market resolution API
+- [x] 9. Market resolution ve winnings
+  - [x] 9.1 Market resolution API
     - Resolution endpoint implementation
     - Creator-only validation
     - Smart contract interaction (resolveMarket)
     - Winnings calculation
     - _Requirements: 6.1-6.7_
-  - [ ] 9.2 Resolution UI
+  - [x] 9.2 Resolution UI
     - Resolution button (creator only)
     - Outcome selection
     - Confirmation dialog
     - Success feedback
     - _Requirements: 6.1-6.7_
-  - [ ] 9.3 Winnings API
+  - [x] 9.3 Winnings API
     - GET /api/winnings/[userId] (claimable amount)
     - POST /api/winnings/claim (claim winnings)
     - Winnings calculation logic
     - _Requirements: 7.1-7.7_
-  - [ ] 9.4 Winnings claim UI
+  - [x] 9.4 Winnings claim UI
     - Claimable winnings display
     - Claim button
     - Transaction handling
     - Success notification
     - _Requirements: 7.1-7.7_
 
-- [ ] 10. User profile (Basit versiyon - blockchain data)
-  - [ ] 10.1 Profile API endpoints (blockchain-first)
+- [x] 10. User profile (Basit versiyon - blockchain data)
+  - [x] 10.1 Profile API endpoints (blockchain-first)
     - GET /api/users/[fid]/profile (Farcaster data + cached)
     - GET /api/users/[fid]/bets (blockchain read + cached)
     - Basit statistics (blockchain'den hesapla)
     - _Requirements: 8.1-8.6_
-  - [ ] 10.2 Profile page UI (Minimal)
+  - [x] 10.2 Profile page UI (Minimal)
     - UserProfile component (Farcaster data)
     - Active bets list (blockchain)
     - Claimable winnings (blockchain)
     - Basit stats (bet count, total wagered)
     - _Requirements: 8.1-8.6_
 
-- [ ]\* 11. Leaderboard ve analytics (Phase 2 - Database gerekli)
+- [x] 11. Leaderboard ve analytics (Phase 2 - Database gerekli)
   - Leaderboard ve detaylı analytics için PostgreSQL gerekli
   - MVP'de bu özellikler olmayacak
   - Phase 2'de database eklendiğinde implement edilecek
