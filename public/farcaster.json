@@ -1,0 +1,12 @@
+{
+  "name": "Prediction Market",
+  "version": "1.0.0",
+  "description": "Decentralized prediction market on Base",
+  "icon": "https://your-app-url.com/icon.png",
+  "homeUrl": "https://your-app-url.com",
+  "imageUrl": "https://your-app-url.com/preview.png",
+  "buttonTitle": "Open App",
+  "splashImageUrl": "https://your-app-url.com/splash.png",
+  "splashBackgroundColor": "#000000",
+  "webhookUrl": "https://your-app-url.com/api/webhooks/farcaster"
+}
