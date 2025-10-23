@@ -1,32 +1,132 @@
-# Farcaster Prediction Market — Workspace Docs
+# 🎯 Farcaster Prediction Market
 
-This repository contains design and requirements specs for the Farcaster Prediction Market mini app (see `.kiro/specs/farcaster-prediction-market`).
+A decentralized prediction market built on Base blockchain, integrated as a Farcaster Mini App. Users can create markets, place bets, and earn rewards from accurate predictions.
 
-This README summarizes what's present and what's missing vs. the three reference guides you asked me to check:
+## 🌟 Features
 
-Reference documents to compare against:
-- Farcaster Mini Apps - Getting Started: https://miniapps.farcaster.xyz/docs/getting-started
-- Base - Build an App: https://docs.base.org/get-started/build-app
-- Farcaster Mini Apps - Wallets Guide: https://miniapps.farcaster.xyz/docs/guides/wallets
+- **Decentralized Markets**: Create prediction markets on any topic
+- **Base Blockchain**: Low gas fees and fast transactions
+- **Farcaster Integration**: Seamless social features and authentication
+- **AMM-based Odds**: Automated market maker for dynamic odds
+- **Smart Wallet Support**: Coinbase Smart Wallet integration
+- **Real-time Updates**: Live odds and market updates
 
-What exists in this workspace:
-- `.kiro/specs/farcaster-prediction-market/design.md` — Detailed design doc (architecture, contracts, prisma schema, Farcaster & Base integration snippets).
-- `.kiro/specs/farcaster-prediction-market/requirements.md` — Requirements and acceptance criteria.
+## 🏗️ Tech Stack
 
-Missing or incomplete items (summary):
-1. A developer-focused Getting Started guide that walks through cloning, installing dependencies, running dev servers, environment variables, and running contract deployments on Base. The design doc has snippets but no step-by-step developer guide.
-2. A detailed Base-specific integration guide covering RPC setup, metamask/coinbase wallet instructions for developers, local testnet usage, Hardhat config examples, and verifications steps tailored to Base docs formatting.
-3. A Wallets guide with copyable examples for integrating Farcaster Mini App wallets and WalletConnect, including deep link / QR flows and explicit steps to obtain WalletConnect project IDs and hook into Farcaster's viem connector. Existing files contain snippets but lack the end-to-end flow and troubleshooting tips from the wallets guide.
-4. A concise `public/farcaster.json` manifest file in the project root. The design doc includes an example but it's not present as a workspace file outside `.kiro`.
-5. A top-level `.env.example` file at repo root (the design doc includes an env example but it's inside `.kiro`).
+- **Frontend**: Next.js 14, TypeScript, TailwindCSS
+- **Blockchain**: Solidity, Hardhat, Base (L2)
+- **Web3**: wagmi, viem
+- **Cache**: Vercel KV (Redis-based)
+- **Deployment**: Vercel
+- **Social**: Farcaster SDK
 
-What I'll add now:
-- `docs/getting-started.md` — Developer getting started with commands and env setup.
-- `docs/base-integration.md` — Focused Base integration guide (RPC, Hardhat, deployment tips)
-- `docs/wallets.md` — Wallet integration guide (wagmi, walletconnect, Farcaster auth highlights)
-- `public/farcaster.json` — Mini app manifest (copy of the example in design.md)
-- `.env.example` — Top-level environment variables example (from design.md)
+## 📚 Documentation
 
-I will not modify `.kiro` specs files; I'll create the docs and artifacts at the repo root so they are discoverable.
+- [Getting Started](docs/getting-started.md) - Setup and installation
+- [Base Integration](docs/base-integration.md) - Base blockchain deployment
+- [Wallets Guide](docs/wallets.md) - Wallet integration
+- [Design Document](.kiro/specs/farcaster-prediction-market/design.md) - Architecture and technical design
+- [Requirements](.kiro/specs/farcaster-prediction-market/requirements.md) - Feature requirements
+- [Tasks](.kiro/specs/farcaster-prediction-market/tasks.md) - Implementation roadmap
 
-Next: I'll create the files mentioned above.
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/eCoxvague/prebasemar.git
+cd prebasemar
+
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env
+
+# Setup Vercel KV (in Vercel dashboard)
+# Add environment variables
+
+# Run development server
+npm run dev
+```
+
+## 📋 Project Structure
+
+```
+prebasemar/
+├── .kiro/specs/           # Project specifications
+│   └── farcaster-prediction-market/
+│       ├── design.md      # Technical design
+│       ├── requirements.md # Feature requirements
+│       └── tasks.md       # Implementation tasks
+├── docs/                  # Documentation
+│   ├── getting-started.md
+│   ├── base-integration.md
+│   └── wallets.md
+├── public/
+│   └── farcaster.json    # Farcaster Mini App manifest
+└── .env.example          # Environment variables template
+```
+
+## 🔧 Environment Variables
+
+See `.env.example` for required environment variables:
+
+- Base RPC URLs (Alchemy/QuickNode)
+- Smart contract addresses
+- Farcaster API keys
+- WalletConnect project ID
+- Vercel KV credentials (auto-added)
+
+## 📦 Implementation Status
+
+**Current Phase**: MVP Development
+
+- ✅ Project specifications complete
+- ✅ Design document complete
+- ✅ Task list ready
+- 🚧 Smart contracts (in progress)
+- 🚧 Frontend development (in progress)
+- ⏳ Deployment (pending)
+
+See [tasks.md](.kiro/specs/farcaster-prediction-market/tasks.md) for detailed progress.
+
+## 🎯 MVP Features
+
+- Market creation and listing
+- Betting with dynamic odds (AMM)
+- Market resolution
+- Winnings claim
+- Basic user profile
+- Farcaster authentication
+- Social sharing
+
+## 🔮 Phase 2 Features
+
+- Leaderboard and rankings
+- Detailed analytics
+- Notification system
+- Dispute mechanism
+- Advanced search and filters
+- Social activity feed
+
+## 🤝 Contributing
+
+This is currently a private project. Contributions will be opened after MVP launch.
+
+## 📄 License
+
+MIT License - see LICENSE file for details
+
+## 🔗 Links
+
+- [Farcaster](https://www.farcaster.xyz/)
+- [Base](https://base.org/)
+- [Vercel](https://vercel.com/)
+
+## 📞 Contact
+
+For questions or support, reach out via Farcaster or GitHub issues.
+
+---
+
+Built with ❤️ on Base
