@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Note: For MVP, we're using blockchain-first approach with Vercel KV cache
+// This schema is prepared for Phase 2 when we add PostgreSQL
+// Currently, all data is read from blockchain and cached in Vercel KV
+
+model User {
+  id          String   @id @default(cuid())
+  fid         Int      @unique
+  username    String
+  displayName String
+  pfpUrl      String
+  bio         String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  markets Market[]
+  bets    Bet[]
+
+  @@index([fid])
+}
+
+model Market {
+  id               String       @id @default(cuid())
+  chainId          Int
+  contractAddress  String
+  marketId         BigInt
+  title            String
+  description      String
+  category         String
+  creatorId        String
+  creator          User         @relation(fields: [creatorId], references: [id])
+  endTime          DateTime
+  status           MarketStatus @default(ACTIVE)
+  totalPool        BigInt       @default(0)
+  participantCount Int          @default(0)
+  winningOutcome   Int?
+  txHash           String
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  outcomes Outcome[]
+  bets     Bet[]
+
+  @@index([status])
+  @@index([category])
+  @@index([creatorId])
+  @@index([endTime])
+}
+
+model Outcome {
+  id        String   @id @default(cuid())
+  marketId  String
+  market    Market   @relation(fields: [marketId], references: [id])
+  outcomeId Int
+  name      String
+  totalBets BigInt   @default(0)
+  liquidity BigInt   @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bets Bet[]
+
+  @@unique([marketId, outcomeId])
+  @@index([marketId])
+}
+
+model Bet {
+  id                String   @id @default(cuid())
+  marketId          String
+  market            Market   @relation(fields: [marketId], references: [id])
+  outcomeId         String
+  outcome           Outcome  @relation(fields: [outcomeId], references: [id])
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
+  amount            BigInt
+  potentialWinnings BigInt
+  claimed           Boolean  @default(false)
+  txHash            String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([userId])
+  @@index([marketId])
+  @@index([outcomeId])
+}
+
+enum MarketStatus {
+  ACTIVE
+  CLOSED
+  PENDING_RESOLUTION
+  RESOLVED
+  CANCELLED
+  DISPUTED
+}

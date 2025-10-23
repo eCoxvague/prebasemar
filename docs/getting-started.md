@@ -3,6 +3,7 @@
 This guide helps a developer set up the project locally, run the frontend, run the backend APIs, run smart contract tests, and deploy to Base (testnet/mainnet). It combines required steps from the project design and the Farcaster miniapps getting-started guide.
 
 Prerequisites
+
 - Node.js 18+ (LTS recommended)
 - pnpm or npm
 - Git
@@ -13,19 +14,21 @@ Prerequisites
 
 Quick start
 
-1) Clone
+1. Clone
 
-    git clone <repo-url> .
+   git clone <repo-url> .
 
-2) Install
+2. Install
 
-    # using npm
-    npm install
+   # using npm
 
-    # or using pnpm
-    pnpm install
+   npm install
 
-3) Create environment file
+   # or using pnpm
+
+   pnpm install
+
+3. Create environment file
 
 Copy the example and fill values:
 
@@ -33,7 +36,7 @@ Copy the example and fill values:
 
 Set `DATABASE_URL`, `NEXT_PUBLIC_BASE_RPC_URL` (or local RPC), `PRIVATE_KEY`, `JWT_SECRET`, and any Farcaster keys.
 
-4) Start dependent services
+4. Start dependent services
 
 Option A — Docker (quick):
 
@@ -42,22 +45,22 @@ Option A — Docker (quick):
 
 Option B — use managed Postgres/Redis or local installs.
 
-5) Run database migrations (Prisma)
+5. Run database migrations (Prisma)
 
-    npx prisma migrate dev --name init
+   npx prisma migrate dev --name init
 
-6) Run frontend (Next.js)
+6. Run frontend (Next.js)
 
-    npm run dev
+   npm run dev
 
-7) Run backend + websocket server
+7. Run backend + websocket server
 
 If the project uses a single Next.js app with API routes and socket server, the `npm run dev` should cover both. Otherwise run:
 
     # Example: start API server
     npm run dev:api
 
-8) Smart contracts (optional)
+8. Smart contracts (optional)
 
 Run tests locally against Hardhat network:
 
@@ -72,10 +75,12 @@ Deploy to Base mainnet:
     npx hardhat run --network base scripts/deploy.ts
 
 Common issues & troubleshooting
+
 - Missing env values: check `.env` and fill `NEXT_PUBLIC_BASE_RPC_URL`, `PRIVATE_KEY`, and `DATABASE_URL`.
 - Wallet wrong network: ensure wallets are connected to Base chainId (8453) or Base Sepolia (84532).
 - Farcaster auth: Farcaster auth uses a relay and SIWE flow; use keys from your Farcaster developer dashboard.
 
 Further reading
+
 - Farcaster Mini Apps getting-started: https://miniapps.farcaster.xyz/docs/getting-started
 - Base docs: https://docs.base.org/get-started/build-app

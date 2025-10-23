@@ -47,6 +47,7 @@ cp .env.example .env
 ```
 
 Doldurulması gereken kritik değerler:
+
 - `DATABASE_URL` - PostgreSQL connection string
 - `REDIS_URL` - Redis connection string
 - `NEXT_PUBLIC_BASE_RPC_URL` - Base RPC endpoint
@@ -175,6 +176,7 @@ Error: Can't reach database server at localhost:5432
 ```
 
 **Çözüm:**
+
 - PostgreSQL'in çalıştığından emin olun: `docker ps` veya `pg_isready`
 - `DATABASE_URL` değerinin doğru olduğunu kontrol edin
 - Firewall ayarlarını kontrol edin
@@ -186,6 +188,7 @@ Error: Chain mismatch. Expected 8453, got 1
 ```
 
 **Çözüm:**
+
 - Wallet'ınızı Base network'üne switch edin
 - MetaMask'ta: Networks → Add Network → Base
 - Chain ID: 8453 (mainnet) veya 84532 (sepolia)
@@ -197,6 +200,7 @@ Error: Insufficient funds for gas
 ```
 
 **Çözüm:**
+
 - Base Sepolia faucet kullanın: [Coinbase Faucet](https://www.coinbase.com/faucets/base-ethereum-goerli-faucet)
 - Bridged ETH alın: [Base Bridge](https://bridge.base.org/)
 
@@ -207,6 +211,7 @@ Error: Transaction reverted without a reason string
 ```
 
 **Çözüm:**
+
 - Gas limit'i artırın
 - Constructor parametrelerini kontrol edin
 - `PRIVATE_KEY` ve `OWNER_ADDRESS` değerlerinin doğru olduğunu kontrol edin
@@ -219,6 +224,7 @@ Error: Failed to initialize Farcaster SDK
 ```
 
 **Çözüm:**
+
 - `FARCASTER_SIGNER_UUID` değerinin doğru olduğunu kontrol edin
 - Farcaster developer portal'da app'in aktif olduğunu kontrol edin
 - CORS ayarlarını kontrol edin
@@ -247,6 +253,7 @@ Error: Failed to initialize Farcaster SDK
 ### Temel Teknoloji Stack
 
 **Frontend:**
+
 - Next.js 14 (App Router)
 - TypeScript
 - TailwindCSS (styling)
@@ -257,17 +264,20 @@ Error: Failed to initialize Farcaster SDK
 - Socket.io-client (real-time updates)
 
 **Backend:**
+
 - Next.js API Routes
 - Vercel KV (Redis-based caching & sessions)
 - Socket.io (WebSocket server - optional for real-time)
 
 **Blockchain:**
+
 - Solidity 0.8.x
 - Hardhat (development & testing)
 - Base Mainnet / Base Sepolia (testnet)
 - OpenZeppelin Contracts (security)
 
 **Infrastructure:**
+
 - Vercel (hosting + KV storage)
 - Alchemy / QuickNode (RPC provider)
 
@@ -281,28 +291,28 @@ graph TB
         A[Farcaster Mini App]
         B[Web Interface]
     end
-    
+
     subgraph "Application Layer"
         C[Next.js Frontend]
         D[API Routes]
         E[WebSocket Server]
     end
-    
+
     subgraph "Data Layer"
         F[Vercel KV Cache]
     end
-    
+
     subgraph "Blockchain Layer"
         I[Base Network]
         J[Smart Contracts]
         K[RPC Provider]
     end
-    
+
     subgraph "External Services"
         L[Farcaster Hub]
         M[Wallet Providers]
     end
-    
+
     A --> C
     B --> C
     C --> D
@@ -319,21 +329,25 @@ graph TB
 ### System Flow
 
 **1. Kullanıcı Kimlik Doğrulama Akışı:**
+
 ```
 User → Farcaster SDK → Farcaster Hub → Verify FID → Store Session → Redirect to App
 ```
 
 **2. Piyasa Oluşturma Akışı:**
+
 ```
 User Input → Validation → Smart Contract Call → Transaction Confirmation → Database Update → WebSocket Broadcast
 ```
 
 **3. Bahis Yapma Akışı:**
+
 ```
 Select Outcome → Enter Amount → Calculate Odds → Wallet Approval → Smart Contract Call → Update AMM → Database Update → Real-time Broadcast
 ```
 
 **4. Sonuçlandırma Akışı:**
+
 ```
 Market Expires → Creator Resolves → Smart Contract Update → Calculate Winnings → Update Database → Notify Winners
 ```
@@ -343,6 +357,7 @@ Market Expires → Creator Resolves → Smart Contract Update → Calculate Winn
 ### Frontend Components
 
 #### 1. Authentication Components
+
 ```typescript
 // components/auth/FarcasterAuth.tsx
 interface FarcasterAuthProps {
@@ -360,6 +375,7 @@ interface FarcasterUser {
 ```
 
 #### 2. Wallet Components
+
 ```typescript
 // components/wallet/WalletConnect.tsx
 interface WalletConnectProps {
@@ -375,6 +391,7 @@ interface WalletBalanceProps {
 ```
 
 #### 3. Market Components
+
 ```typescript
 // components/market/MarketCard.tsx
 interface MarketCardProps {
@@ -397,6 +414,7 @@ interface CreateMarketFormProps {
 ```
 
 #### 4. Betting Components
+
 ```typescript
 // components/betting/BetModal.tsx
 interface BetModalProps {
@@ -415,6 +433,7 @@ interface OddsDisplayProps {
 ```
 
 #### 5. Profile Components
+
 ```typescript
 // components/profile/UserProfile.tsx
 interface UserProfileProps {
@@ -435,6 +454,7 @@ interface StatisticsProps {
 ```
 
 #### 6. Leaderboard Components
+
 ```typescript
 // components/leaderboard/Leaderboard.tsx
 interface LeaderboardProps {
@@ -446,6 +466,7 @@ interface LeaderboardProps {
 ### Backend API Endpoints
 
 #### Authentication APIs
+
 ```typescript
 // /api/auth/farcaster
 POST /api/auth/farcaster
@@ -458,6 +479,7 @@ Response: { user: User | null }
 ```
 
 #### Market APIs
+
 ```typescript
 // /api/markets
 GET /api/markets?category=&status=&search=&sort=
@@ -480,6 +502,7 @@ Response: { success: boolean }
 ```
 
 #### Betting APIs
+
 ```typescript
 // /api/bets
 POST /api/bets
@@ -492,6 +515,7 @@ Response: { bets: Bet[] }
 ```
 
 #### Winnings APIs
+
 ```typescript
 // /api/winnings/[userId]
 GET /api/winnings/[userId]
@@ -503,6 +527,7 @@ Response: { amount: bigint, txHash: string }
 ```
 
 #### Analytics APIs
+
 ```typescript
 // /api/analytics/leaderboard
 GET /api/analytics/leaderboard?timeframe=weekly
@@ -514,6 +539,7 @@ Response: { totalVolume, activeUsers, totalMarkets, fees }
 ```
 
 #### Social APIs
+
 ```typescript
 // /api/social/share
 POST /api/social/share
@@ -528,6 +554,7 @@ Response: { activities: Activity[] }
 ### Smart Contract Interfaces
 
 #### PredictionMarket.sol (Main Contract)
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
@@ -543,7 +570,7 @@ interface IPredictionMarket {
         uint256 winningOutcome;
         uint256 creationFee;
     }
-    
+
     struct Outcome {
         uint256 id;
         uint256 marketId;
@@ -551,7 +578,7 @@ interface IPredictionMarket {
         uint256 totalBets;
         uint256 liquidity;
     }
-    
+
     struct Bet {
         uint256 id;
         uint256 marketId;
@@ -561,7 +588,7 @@ interface IPredictionMarket {
         uint256 timestamp;
         bool claimed;
     }
-    
+
     enum MarketStatus {
         Active,
         Closed,
@@ -569,7 +596,7 @@ interface IPredictionMarket {
         Cancelled,
         Disputed
     }
-    
+
     // Events
     event MarketCreated(uint256 indexed marketId, address indexed creator, uint256 endTime);
     event BetPlaced(uint256 indexed marketId, uint256 indexed outcomeId, address indexed bettor, uint256 amount);
@@ -577,48 +604,49 @@ interface IPredictionMarket {
     event WinningsClaimed(address indexed user, uint256 amount);
     event MarketCancelled(uint256 indexed marketId);
     event DisputeRaised(uint256 indexed marketId, address indexed disputer);
-    
+
     // Core Functions
     function createMarket(
         string memory title,
         string[] memory outcomeNames,
         uint256 endTime
     ) external payable returns (uint256 marketId);
-    
+
     function placeBet(
         uint256 marketId,
         uint256 outcomeId
     ) external payable;
-    
+
     function resolveMarket(
         uint256 marketId,
         uint256 winningOutcome
     ) external;
-    
+
     function claimWinnings(uint256[] memory betIds) external;
-    
+
     function cancelMarket(uint256 marketId) external;
-    
+
     function raiseDispute(uint256 marketId, string memory reason) external;
-    
+
     // View Functions
     function getMarket(uint256 marketId) external view returns (Market memory);
-    
+
     function getOutcomes(uint256 marketId) external view returns (Outcome[] memory);
-    
+
     function getUserBets(address user) external view returns (Bet[] memory);
-    
+
     function calculatePotentialWinnings(
         uint256 marketId,
         uint256 outcomeId,
         uint256 betAmount
     ) external view returns (uint256);
-    
+
     function getOdds(uint256 marketId) external view returns (uint256[] memory);
 }
 ```
 
 #### AMMLibrary.sol (Automated Market Maker)
+
 ```solidity
 library AMMLibrary {
     // Constant product formula: x * y = k
@@ -627,18 +655,18 @@ library AMMLibrary {
         uint256 outcomeLiquidity,
         uint256 numOutcomes
     ) internal pure returns (uint256);
-    
+
     function calculateNewLiquidity(
         uint256 currentLiquidity,
         uint256 betAmount,
         uint256 totalPool
     ) internal pure returns (uint256);
-    
+
     function calculateSlippage(
         uint256 betAmount,
         uint256 currentLiquidity
     ) internal pure returns (uint256);
-    
+
     function calculatePlatformFee(
         uint256 amount,
         uint256 feePercentage
@@ -647,6 +675,7 @@ library AMMLibrary {
 ```
 
 #### FeeManager.sol
+
 ```solidity
 interface IFeeManager {
     function setCreationFee(uint256 newFee) external;
@@ -765,7 +794,9 @@ export async function cacheMarket(marketId: string, market: CachedMarket) {
   await kv.set(`market:${marketId}`, market, { ex: 300 }); // 5min
 }
 
-export async function getCachedMarket(marketId: string): Promise<CachedMarket | null> {
+export async function getCachedMarket(
+  marketId: string
+): Promise<CachedMarket | null> {
   return await kv.get(`market:${marketId}`);
 }
 
@@ -781,7 +812,9 @@ export async function cacheUserBets(fid: number, bets: CachedUserBets[]) {
   await kv.set(`user:${fid}:bets`, bets, { ex: 300 }); // 5min
 }
 
-export async function getCachedUserBets(fid: number): Promise<CachedUserBets[] | null> {
+export async function getCachedUserBets(
+  fid: number
+): Promise<CachedUserBets[] | null> {
   return await kv.get(`user:${fid}:bets`);
 }
 
@@ -790,7 +823,9 @@ export async function cacheOdds(marketId: string, odds: number[]) {
   await kv.set(`odds:${marketId}`, odds, { ex: 30 }); // 30s
 }
 
-export async function getCachedOdds(marketId: string): Promise<number[] | null> {
+export async function getCachedOdds(
+  marketId: string
+): Promise<number[] | null> {
   return await kv.get(`odds:${marketId}`);
 }
 ```
@@ -839,12 +874,12 @@ export interface Bet {
   createdAt: Date;
 }
 
-export type MarketStatus = 
-  | 'ACTIVE' 
-  | 'CLOSED' 
-  | 'PENDING_RESOLUTION' 
-  | 'RESOLVED' 
-  | 'CANCELLED' 
+export type MarketStatus =
+  | 'ACTIVE'
+  | 'CLOSED'
+  | 'PENDING_RESOLUTION'
+  | 'RESOLVED'
+  | 'CANCELLED'
   | 'DISPUTED';
 
 export interface CreateMarketInput {
@@ -910,12 +945,9 @@ export class InsufficientBalanceError extends AppError {
 
 export class MarketClosedError extends AppError {
   constructor(marketId: string) {
-    super(
-      'MARKET_CLOSED',
-      `Market ${marketId} is closed for betting`,
-      400,
-      { marketId }
-    );
+    super('MARKET_CLOSED', `Market ${marketId} is closed for betting`, 400, {
+      marketId,
+    });
   }
 }
 ```
@@ -930,28 +962,28 @@ export function errorHandler(error: Error, req: Request, res: Response) {
       error: {
         code: error.code,
         message: error.message,
-        details: error.details
-      }
+        details: error.details,
+      },
     });
   }
-  
+
   // Blockchain errors
   if (error.message.includes('user rejected')) {
     return res.status(400).json({
       error: {
         code: 'USER_REJECTED',
-        message: 'Transaction was rejected by user'
-      }
+        message: 'Transaction was rejected by user',
+      },
     });
   }
-  
+
   // Generic error
   console.error('Unhandled error:', error);
   return res.status(500).json({
     error: {
       code: 'INTERNAL_ERROR',
-      message: 'An unexpected error occurred'
-    }
+      message: 'An unexpected error occurred',
+    },
   });
 }
 ```
@@ -968,7 +1000,7 @@ export function ErrorDisplay({ error }: { error: AppError }) {
     AUTH_ERROR: 'Lütfen giriş yapın.',
     VALIDATION_ERROR: 'Girdiğiniz bilgileri kontrol edin.',
   };
-  
+
   return (
     <div className="error-toast">
       <p>{errorMessages[error.code] || error.message}</p>
@@ -983,38 +1015,41 @@ export function ErrorDisplay({ error }: { error: AppError }) {
 ### Unit Tests
 
 **Smart Contracts (Hardhat + Chai)**
+
 ```typescript
 // test/PredictionMarket.test.ts
-describe("PredictionMarket", () => {
-  it("should create a market with correct parameters");
-  it("should accept bets and update odds");
-  it("should prevent betting after market closes");
-  it("should resolve market and calculate winnings correctly");
-  it("should handle platform fees correctly");
-  it("should prevent reentrancy attacks");
-  it("should allow market cancellation with refunds");
+describe('PredictionMarket', () => {
+  it('should create a market with correct parameters');
+  it('should accept bets and update odds');
+  it('should prevent betting after market closes');
+  it('should resolve market and calculate winnings correctly');
+  it('should handle platform fees correctly');
+  it('should prevent reentrancy attacks');
+  it('should allow market cancellation with refunds');
 });
 ```
 
 **Backend APIs (Jest)**
+
 ```typescript
 // __tests__/api/markets.test.ts
-describe("Markets API", () => {
-  it("GET /api/markets returns paginated markets");
-  it("POST /api/markets creates market and returns ID");
-  it("PATCH /api/markets/[id]/resolve updates market status");
-  it("handles invalid market creation data");
+describe('Markets API', () => {
+  it('GET /api/markets returns paginated markets');
+  it('POST /api/markets creates market and returns ID');
+  it('PATCH /api/markets/[id]/resolve updates market status');
+  it('handles invalid market creation data');
 });
 ```
 
 **Frontend Components (Jest + React Testing Library)**
+
 ```typescript
 // __tests__/components/MarketCard.test.tsx
-describe("MarketCard", () => {
-  it("renders market information correctly");
-  it("displays correct odds for each outcome");
-  it("shows time remaining until market closes");
-  it("handles click events");
+describe('MarketCard', () => {
+  it('renders market information correctly');
+  it('displays correct odds for each outcome');
+  it('shows time remaining until market closes');
+  it('handles click events');
 });
 ```
 
@@ -1022,8 +1057,8 @@ describe("MarketCard", () => {
 
 ```typescript
 // __tests__/integration/betting-flow.test.ts
-describe("Complete Betting Flow", () => {
-  it("user can create market, place bet, and claim winnings", async () => {
+describe('Complete Betting Flow', () => {
+  it('user can create market, place bet, and claim winnings', async () => {
     // 1. Create market
     // 2. Place bet
     // 3. Resolve market
@@ -1037,7 +1072,7 @@ describe("Complete Betting Flow", () => {
 
 ```typescript
 // e2e/market-creation.spec.ts
-test("complete market creation flow", async ({ page }) => {
+test('complete market creation flow', async ({ page }) => {
   await page.goto('/');
   await page.click('[data-testid="create-market"]');
   await page.fill('[name="title"]', 'Test Market');
@@ -1048,6 +1083,7 @@ test("complete market creation flow", async ({ page }) => {
 ```
 
 ### Test Coverage Goals
+
 - Smart Contracts: 100% (critical for security)
 - Backend APIs: 90%
 - Frontend Components: 80%
@@ -1108,18 +1144,21 @@ test("complete market creation flow", async ({ page }) => {
 ## Deployment Strategy
 
 ### Development Environment
+
 - Base Sepolia testnet
 - Local PostgreSQL
 - Local Redis
 - Vercel preview deployments
 
 ### Staging Environment
+
 - Base Sepolia testnet
 - Managed PostgreSQL (Supabase/Neon)
 - Managed Redis (Upstash)
 - Vercel staging deployment
 
 ### Production Environment
+
 - Base Mainnet
 - Managed PostgreSQL with replicas
 - Managed Redis cluster
@@ -1182,6 +1221,7 @@ PAYMASTER_URL=
 ```
 
 **Environment Scope:**
+
 - **Production**: Production branch (main) için
 - **Preview**: Pull request'ler için
 - **Development**: Local development için
@@ -1480,6 +1520,7 @@ vercel rollback
 5. **Redis**: Cache hit rate ve memory usage
 
 ### Deployment Checklist
+
 1. Smart contract audit completed
 2. All tests passing
 3. Environment variables configured
@@ -1491,6 +1532,7 @@ vercel rollback
 ## Monitoring and Observability
 
 ### Metrics to Track
+
 - Transaction success/failure rates
 - API response times
 - Database query performance
@@ -1500,6 +1542,7 @@ vercel rollback
 - Platform revenue
 
 ### Logging Strategy
+
 - Structured logging (JSON format)
 - Log levels: ERROR, WARN, INFO, DEBUG
 - Centralized logging (DataDog/CloudWatch)
@@ -1507,6 +1550,7 @@ vercel rollback
 - Error tracking (Sentry)
 
 ### Alerts
+
 - Smart contract errors
 - API downtime
 - Database connection issues
@@ -1524,7 +1568,7 @@ import { base, baseSepolia } from 'viem/chains';
 
 export const SUPPORTED_CHAINS = {
   production: base,
-  development: baseSepolia
+  development: baseSepolia,
 };
 
 export const BASE_CONFIG = {
@@ -1536,21 +1580,23 @@ export const BASE_CONFIG = {
     nativeCurrency: {
       name: 'Ethereum',
       symbol: 'ETH',
-      decimals: 18
-    }
+      decimals: 18,
+    },
   },
   testnet: {
     chainId: 84532,
     name: 'Base Sepolia',
-    rpcUrl: process.env.NEXT_PUBLIC_BASE_SEPOLIA_RPC_URL || 'https://sepolia.base.org',
+    rpcUrl:
+      process.env.NEXT_PUBLIC_BASE_SEPOLIA_RPC_URL ||
+      'https://sepolia.base.org',
     blockExplorer: 'https://sepolia.basescan.org',
     nativeCurrency: {
       name: 'Ethereum',
       symbol: 'ETH',
-      decimals: 18
+      decimals: 18,
     },
-    faucet: 'https://www.coinbase.com/faucets/base-ethereum-goerli-faucet'
-  }
+    faucet: 'https://www.coinbase.com/faucets/base-ethereum-goerli-faucet',
+  },
 };
 ```
 
@@ -1577,14 +1623,14 @@ export const wagmiConfig = createConfig({
         name: 'Farcaster Prediction Market',
         description: 'Decentralized prediction market on Base',
         url: 'https://your-app-url.com',
-        icons: ['https://your-app-url.com/icon.png']
-      }
-    })
+        icons: ['https://your-app-url.com/icon.png'],
+      },
+    }),
   ],
   transports: {
     [base.id]: http(process.env.NEXT_PUBLIC_BASE_RPC_URL),
-    [baseSepolia.id]: http(process.env.NEXT_PUBLIC_BASE_SEPOLIA_RPC_URL)
-  }
+    [baseSepolia.id]: http(process.env.NEXT_PUBLIC_BASE_SEPOLIA_RPC_URL),
+  },
 });
 ```
 
@@ -1596,7 +1642,7 @@ import { ethers } from 'hardhat';
 
 async function main() {
   console.log('Deploying to Base...');
-  
+
   // Deploy PredictionMarket contract
   const PredictionMarket = await ethers.getContractFactory('PredictionMarket');
   const predictionMarket = await PredictionMarket.deploy(
@@ -1604,12 +1650,12 @@ async function main() {
     ethers.parseEther('0.001'), // Creation fee
     200 // Platform fee (2%)
   );
-  
+
   await predictionMarket.waitForDeployment();
   const address = await predictionMarket.getAddress();
-  
+
   console.log('PredictionMarket deployed to:', address);
-  
+
   // Verify on BaseScan
   console.log('Verifying contract...');
   await run('verify:verify', {
@@ -1617,8 +1663,8 @@ async function main() {
     constructorArguments: [
       process.env.OWNER_ADDRESS,
       ethers.parseEther('0.001'),
-      200
-    ]
+      200,
+    ],
   });
 }
 ```
@@ -1636,28 +1682,28 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200
-      }
-    }
+        runs: 200,
+      },
+    },
   },
   networks: {
     baseSepolia: {
       url: process.env.BASE_SEPOLIA_RPC_URL || 'https://sepolia.base.org',
       accounts: [process.env.PRIVATE_KEY!],
       chainId: 84532,
-      gasPrice: 1000000000 // 1 gwei
+      gasPrice: 1000000000, // 1 gwei
     },
     base: {
       url: process.env.BASE_RPC_URL || 'https://mainnet.base.org',
       accounts: [process.env.PRIVATE_KEY!],
       chainId: 8453,
-      gasPrice: 'auto'
-    }
+      gasPrice: 'auto',
+    },
   },
   etherscan: {
     apiKey: {
       base: process.env.BASESCAN_API_KEY!,
-      baseSepolia: process.env.BASESCAN_API_KEY!
+      baseSepolia: process.env.BASESCAN_API_KEY!,
     },
     customChains: [
       {
@@ -1665,19 +1711,19 @@ const config: HardhatUserConfig = {
         chainId: 8453,
         urls: {
           apiURL: 'https://api.basescan.org/api',
-          browserURL: 'https://basescan.org'
-        }
+          browserURL: 'https://basescan.org',
+        },
       },
       {
         network: 'baseSepolia',
         chainId: 84532,
         urls: {
           apiURL: 'https://api-sepolia.basescan.org/api',
-          browserURL: 'https://sepolia.basescan.org'
-        }
-      }
-    ]
-  }
+          browserURL: 'https://sepolia.basescan.org',
+        },
+      },
+    ],
+  },
 };
 
 export default config;
@@ -1701,7 +1747,7 @@ export async function initializeFarcaster() {
     return {
       user: context.user,
       location: context.location,
-      client: context.client
+      client: context.client,
     };
   } catch (error) {
     console.error('Failed to initialize Farcaster SDK:', error);
@@ -1722,15 +1768,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Farcaster Prediction Market',
     description: 'Make predictions and earn rewards',
-    images: ['/og-image.png']
+    images: ['/og-image.png'],
   },
   other: {
     'fc:frame': 'vNext',
     'fc:frame:image': 'https://your-app-url.com/frame-image.png',
     'fc:frame:button:1': 'Open App',
     'fc:frame:button:1:action': 'link',
-    'fc:frame:button:1:target': 'https://your-app-url.com'
-  }
+    'fc:frame:button:1:target': 'https://your-app-url.com',
+  },
 };
 ```
 
@@ -1742,21 +1788,16 @@ import { createAppClient, viemConnector } from '@farcaster/auth-client';
 
 export const farcasterAuthClient = createAppClient({
   relay: 'https://relay.farcaster.xyz',
-  ethereum: viemConnector()
+  ethereum: viemConnector(),
 });
 
 export async function authenticateWithFarcaster() {
-  const {
-    channelToken,
-    url,
-    message,
-    signature,
-    nonce
-  } = await farcasterAuthClient.createChannel({
-    siweUri: 'https://your-app-url.com',
-    domain: 'your-app-url.com'
-  });
-  
+  const { channelToken, url, message, signature, nonce } =
+    await farcasterAuthClient.createChannel({
+      siweUri: 'https://your-app-url.com',
+      domain: 'your-app-url.com',
+    });
+
   // Show QR code or deep link
   return { channelToken, url };
 }
@@ -1765,18 +1806,18 @@ export async function verifyFarcasterAuth(channelToken: string) {
   const { data, error } = await farcasterAuthClient.watchStatus({
     channelToken,
     timeout: 60000,
-    interval: 1000
+    interval: 1000,
   });
-  
+
   if (error) throw error;
-  
+
   // Verify signature and get user data
   return {
     fid: data.fid,
     username: data.username,
     displayName: data.displayName,
     pfpUrl: data.pfpUrl,
-    custody: data.custody
+    custody: data.custody,
   };
 }
 ```
@@ -1787,25 +1828,26 @@ export async function verifyFarcasterAuth(channelToken: string) {
 // lib/farcaster/hub.ts
 import axios from 'axios';
 
-const FARCASTER_HUB_URL = process.env.FARCASTER_HUB_URL || 'https://hub.farcaster.xyz';
+const FARCASTER_HUB_URL =
+  process.env.FARCASTER_HUB_URL || 'https://hub.farcaster.xyz';
 
 export async function getUserByFid(fid: number) {
   const response = await axios.get(`${FARCASTER_HUB_URL}/v1/userDataByFid`, {
-    params: { fid }
+    params: { fid },
   });
   return response.data;
 }
 
 export async function getCastsByFid(fid: number, limit = 10) {
   const response = await axios.get(`${FARCASTER_HUB_URL}/v1/castsByFid`, {
-    params: { fid, limit }
+    params: { fid, limit },
   });
   return response.data;
 }
 
 export async function getFollowersByFid(fid: number) {
   const response = await axios.get(`${FARCASTER_HUB_URL}/v1/linksByFid`, {
-    params: { fid, link_type: 'follow' }
+    params: { fid, link_type: 'follow' },
   });
   return response.data;
 }
@@ -1831,7 +1873,7 @@ export async function publishCast(params: {
       params.text,
       {
         embeds: params.embeds,
-        channelId: params.channelId
+        channelId: params.channelId,
       }
     );
     return cast;
@@ -1841,14 +1883,17 @@ export async function publishCast(params: {
   }
 }
 
-export async function sharePredictionMarket(marketId: string, marketTitle: string) {
+export async function sharePredictionMarket(
+  marketId: string,
+  marketTitle: string
+) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   const text = `🎯 New prediction market: ${marketTitle}\n\nPlace your bets now!`;
-  
+
   return publishCast({
     signerUuid: process.env.FARCASTER_SIGNER_UUID!,
     text,
-    embeds: [{ url: `${appUrl}/markets/${marketId}` }]
+    embeds: [{ url: `${appUrl}/markets/${marketId}` }],
   });
 }
 ```
@@ -1865,26 +1910,26 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const market = await getMarket(params.id);
-  
+
   const frameHtml = getFrameHtml({
     image: `${process.env.NEXT_PUBLIC_APP_URL}/api/og/market/${params.id}`,
     buttons: [
       {
         label: 'View Market',
         action: 'link',
-        target: `${process.env.NEXT_PUBLIC_APP_URL}/markets/${params.id}`
+        target: `${process.env.NEXT_PUBLIC_APP_URL}/markets/${params.id}`,
       },
       {
         label: 'Place Bet',
         action: 'post',
-        target: `${process.env.NEXT_PUBLIC_APP_URL}/api/frames/bet/${params.id}`
-      }
+        target: `${process.env.NEXT_PUBLIC_APP_URL}/api/frames/bet/${params.id}`,
+      },
     ],
     postUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/frames/market/${params.id}`,
   });
-  
+
   return new NextResponse(frameHtml, {
-    headers: { 'Content-Type': 'text/html' }
+    headers: { 'Content-Type': 'text/html' },
   });
 }
 ```
@@ -1957,12 +2002,12 @@ export const coinbaseWallet = new CoinbaseWalletSDK({
   appLogoUrl: 'https://your-app-url.com/logo.png',
   darkMode: true,
   overrideIsMetaMask: false,
-  reloadOnDisconnect: false
+  reloadOnDisconnect: false,
 });
 
 export const coinbaseProvider = coinbaseWallet.makeWeb3Provider({
   options: 'smartWalletOnly', // Force Smart Wallet
-  chainId: 8453 // Base Mainnet
+  chainId: 8453, // Base Mainnet
 });
 ```
 
@@ -1974,7 +2019,7 @@ import sdk from '@farcaster/frame-sdk';
 
 export async function getFarcasterContext() {
   const context = await sdk.context;
-  
+
   return {
     user: {
       fid: context.user.fid,
@@ -2036,7 +2081,7 @@ export async function GET(
 ) {
   const market = await prisma.market.findUnique({
     where: { id: params.id },
-    include: { outcomes: true }
+    include: { outcomes: true },
   });
 
   if (!market) {
@@ -2048,24 +2093,24 @@ export async function GET(
       {
         label: `Bet on ${market.outcomes[0].name}`,
         action: 'post',
-        target: `${process.env.NEXT_PUBLIC_APP_URL}/api/frames/bet/${market.id}/0`
+        target: `${process.env.NEXT_PUBLIC_APP_URL}/api/frames/bet/${market.id}/0`,
       },
       {
         label: `Bet on ${market.outcomes[1].name}`,
         action: 'post',
-        target: `${process.env.NEXT_PUBLIC_APP_URL}/api/frames/bet/${market.id}/1`
+        target: `${process.env.NEXT_PUBLIC_APP_URL}/api/frames/bet/${market.id}/1`,
       },
       {
         label: 'View Details',
         action: 'link',
-        target: `${process.env.NEXT_PUBLIC_APP_URL}/markets/${market.id}`
-      }
+        target: `${process.env.NEXT_PUBLIC_APP_URL}/markets/${market.id}`,
+      },
     ],
     image: {
       src: `${process.env.NEXT_PUBLIC_APP_URL}/api/og/market/${market.id}`,
-      aspectRatio: '1.91:1'
+      aspectRatio: '1.91:1',
     },
-    postUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/frames/market/${market.id}`
+    postUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/frames/market/${market.id}`,
   });
 
   return new NextResponse(
@@ -2073,7 +2118,9 @@ export async function GET(
     <html>
       <head>
         ${Object.entries(frameMetadata)
-          .map(([key, value]) => `<meta property="${key}" content="${value}" />`)
+          .map(
+            ([key, value]) => `<meta property="${key}" content="${value}" />`
+          )
           .join('\n        ')}
       </head>
       <body>
@@ -2083,8 +2130,8 @@ export async function GET(
     {
       headers: {
         'Content-Type': 'text/html',
-        'Cache-Control': 'public, max-age=60'
-      }
+        'Cache-Control': 'public, max-age=60',
+      },
     }
   );
 }
@@ -2099,14 +2146,14 @@ export async function POST(
 
   // Verify the frame message
   const { isValid, message } = await validateFrameMessage(body);
-  
+
   if (!isValid) {
     return new NextResponse('Invalid frame message', { status: 400 });
   }
 
   // Process the action based on button clicked
   const buttonIndex = untrustedData.buttonIndex;
-  
+
   // Return updated frame
   return NextResponse.json({
     // Updated frame data
@@ -2194,21 +2241,21 @@ export async function sendGaslessTransaction(params: {
   value?: bigint;
 }) {
   const paymasterUrl = process.env.PAYMASTER_URL;
-  
+
   if (!paymasterUrl) {
     throw new Error('Paymaster not configured');
   }
-  
+
   // Use Coinbase Paymaster or similar service
   const response = await fetch(paymasterUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       method: 'pm_sponsorUserOperation',
-      params: [params]
-    })
+      params: [params],
+    }),
   });
-  
+
   const { result } = await response.json();
   return result;
 }
@@ -2277,28 +2324,28 @@ npx hardhat verify --network base DEPLOYED_CONTRACT_ADDRESS "constructor" "argum
 
 ```typescript
 // test/gas-optimization.test.ts
-import { expect } from "chai";
-import { ethers } from "hardhat";
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
 
-describe("Gas Optimization Tests", () => {
-  it("should measure gas for market creation", async () => {
+describe('Gas Optimization Tests', () => {
+  it('should measure gas for market creation', async () => {
     const tx = await predictionMarket.createMarket(
-      "Test Market",
-      ["Yes", "No"],
+      'Test Market',
+      ['Yes', 'No'],
       futureTimestamp,
-      { value: ethers.parseEther("0.001") }
+      { value: ethers.parseEther('0.001') }
     );
     const receipt = await tx.wait();
-    console.log("Gas used for market creation:", receipt.gasUsed.toString());
+    console.log('Gas used for market creation:', receipt.gasUsed.toString());
     expect(receipt.gasUsed).to.be.lt(500000); // Should be under 500k gas
   });
 
-  it("should measure gas for placing bet", async () => {
+  it('should measure gas for placing bet', async () => {
     const tx = await predictionMarket.placeBet(marketId, 0, {
-      value: ethers.parseEther("0.1")
+      value: ethers.parseEther('0.1'),
     });
     const receipt = await tx.wait();
-    console.log("Gas used for placing bet:", receipt.gasUsed.toString());
+    console.log('Gas used for placing bet:', receipt.gasUsed.toString());
     expect(receipt.gasUsed).to.be.lt(200000); // Should be under 200k gas
   });
 });
@@ -2308,13 +2355,13 @@ describe("Gas Optimization Tests", () => {
 
 ```typescript
 // __tests__/integration/full-flow.test.ts
-describe("Complete User Flow", () => {
-  it("should complete full betting cycle", async () => {
+describe('Complete User Flow', () => {
+  it('should complete full betting cycle', async () => {
     // 1. User authenticates with Farcaster
     const authResponse = await request(app)
       .post('/api/auth/farcaster')
       .send({ fid: 12345, signature: 'mock_signature' });
-    
+
     expect(authResponse.status).toBe(200);
     const token = authResponse.body.token;
 
@@ -2323,7 +2370,7 @@ describe("Complete User Flow", () => {
       .post('/api/wallet/connect')
       .set('Authorization', `Bearer ${token}`)
       .send({ address: '0x...' });
-    
+
     expect(walletResponse.status).toBe(200);
 
     // 3. User creates market
@@ -2335,9 +2382,9 @@ describe("Complete User Flow", () => {
         description: 'Test Description',
         outcomes: ['Yes', 'No'],
         endTime: new Date(Date.now() + 86400000),
-        category: 'Sports'
+        category: 'Sports',
       });
-    
+
     expect(marketResponse.status).toBe(201);
     const marketId = marketResponse.body.marketId;
 
@@ -2348,9 +2395,9 @@ describe("Complete User Flow", () => {
       .send({
         marketId,
         outcomeId: 0,
-        amount: ethers.parseEther("0.1").toString()
+        amount: ethers.parseEther('0.1').toString(),
       });
-    
+
     expect(betResponse.status).toBe(201);
 
     // 5. Market resolves
@@ -2358,14 +2405,14 @@ describe("Complete User Flow", () => {
       .patch(`/api/markets/${marketId}/resolve`)
       .set('Authorization', `Bearer ${token}`)
       .send({ winningOutcomeId: 0 });
-    
+
     expect(resolveResponse.status).toBe(200);
 
     // 6. Winner claims winnings
     const claimResponse = await request(app)
       .post('/api/winnings/claim')
       .set('Authorization', `Bearer ${token2}`);
-    
+
     expect(claimResponse.status).toBe(200);
     expect(claimResponse.body.amount).to.be.gt(0);
   });
@@ -2391,7 +2438,7 @@ export function generateWalletDeepLink(
 
   const url = new URL(baseUrls[walletType]);
   url.searchParams.append('action', action);
-  
+
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.append(key, value);
@@ -2511,24 +2558,26 @@ import { base, baseSepolia } from 'viem/chains';
 
 export async function switchToBaseNetwork(isTestnet = false) {
   const targetChain = isTestnet ? baseSepolia : base;
-  
+
   try {
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',
-      params: [{ chainId: `0x${targetChain.id.toString(16)}` }]
+      params: [{ chainId: `0x${targetChain.id.toString(16)}` }],
     });
   } catch (error: any) {
     // Chain not added, add it
     if (error.code === 4902) {
       await window.ethereum.request({
         method: 'wallet_addEthereumChain',
-        params: [{
-          chainId: `0x${targetChain.id.toString(16)}`,
-          chainName: targetChain.name,
-          nativeCurrency: targetChain.nativeCurrency,
-          rpcUrls: [targetChain.rpcUrls.default.http[0]],
-          blockExplorerUrls: [targetChain.blockExplorers.default.url]
-        }]
+        params: [
+          {
+            chainId: `0x${targetChain.id.toString(16)}`,
+            chainName: targetChain.name,
+            nativeCurrency: targetChain.nativeCurrency,
+            rpcUrls: [targetChain.rpcUrls.default.http[0]],
+            blockExplorerUrls: [targetChain.blockExplorers.default.url],
+          },
+        ],
       });
     } else {
       throw error;
@@ -2540,6 +2589,7 @@ export async function switchToBaseNetwork(isTestnet = false) {
 ## Future Enhancements
 
 ### Phase 2 Features
+
 - Multi-token support (USDC, DAI)
 - Liquidity provider rewards
 - Advanced charting and analytics
@@ -2547,6 +2597,7 @@ export async function switchToBaseNetwork(isTestnet = false) {
 - Oracle integration for automated resolution
 
 ### Phase 3 Features
+
 - Cross-chain markets (Optimism, Arbitrum)
 - Governance token
 - DAO for dispute resolution

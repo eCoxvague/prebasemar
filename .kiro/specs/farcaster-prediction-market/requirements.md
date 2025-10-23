@@ -191,7 +191,7 @@ Bu proje, Farcaster Mini App olarak çalışan ve Base blockchain üzerinde işl
 1. WHEN piyasa oluşturulduğunda THEN sistem her seçenek için başlangıç likidite havuzu oluşturmalıdır
 2. WHEN kullanıcı bahis yaptığında THEN sistem otomatik olarak oranları yeniden hesaplamalıdır (bonding curve kullanarak)
 3. WHEN bir seçeneğe çok fazla bahis yapıldığında THEN o seçeneğin oranı düşmeli, diğer seçeneklerin oranı yükselmemelidir
-4. WHEN oranlar hesaplanırken THEN sistem constant product formula (x * y = k) veya benzeri bir algoritma kullanmalıdır
+4. WHEN oranlar hesaplanırken THEN sistem constant product formula (x \* y = k) veya benzeri bir algoritma kullanmalıdır
 5. IF bir seçeneğin oranı çok düşükse (örn: 1.01) THEN sistem minimum oran sınırını uygulamalıdır
 6. WHEN piyasa sonuçlandırıldığında THEN likidite havuzundaki kalan miktar kazananlara orantılı dağıtılmalıdır
 7. WHEN kullanıcı bahis yaparken THEN sistem slippage (kayma) miktarını göstermelidir
