@@ -45,6 +45,8 @@ next-env.d.ts
 cache/
 artifacts/
 typechain-types/
+deployments/*.json
+!deployments/.gitkeep
 
 # Coverage
 coverage.json

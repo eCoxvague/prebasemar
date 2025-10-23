@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { AuthProvider } from '@/lib/context/AuthContext';
+import { Web3Provider } from '@/lib/context/Web3Provider';
 
 export const metadata: Metadata = {
   title: 'Farcaster Prediction Market',
@@ -13,7 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Web3Provider>
+          <AuthProvider>{children}</AuthProvider>
+        </Web3Provider>
+      </body>
     </html>
   );
 }
